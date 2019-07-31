@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Modal, TouchableHighlight } from 'react-native';
-import { Image } from 'react-native-elements';
+import { StyleSheet, Text, View, ActivityIndicator, TouchableHighlight } from 'react-native';
+import { Image, Overlay } from 'react-native-elements';
 import { privateKey, publicKey } from '../../apiKey';
 import { ScrollView } from 'react-native-gesture-handler';
 let md5 = require('md5');
@@ -19,7 +19,7 @@ class ComicsScreen extends Component {
   componentDidMount() {
     let ts = Date();
     let hash = md5(ts + privateKey + publicKey);
-    return fetch(`http://gateway.marvel.com/v1/public/events?ts=${ts}&apikey=${publicKey}&hash=${hash}`)
+    return fetch(`http://gateway.marvel.com/v1/public/comics?ts=${ts}&apikey=${publicKey}&hash=${hash}`)
     .then(res => res.json())
     .then(res => this.setState({comics:res.data.results, isLoading: false}))
     .then(() => console.log(this.state.comics))
@@ -54,14 +54,13 @@ class ComicsScreen extends Component {
     } else {
       return (
         <View style={styles.container}>
-        { console.log(this.state.displayComic) }
           <ScrollView contentContainerStyle={styles.container}>
             {displayComics}
           </ScrollView>
-          <Modal
-            animationType="slide"
-            transparent={false}
-            visible={this.state.modalVisible}>
+          <Overlay
+            windowBackgroundColor="red"
+            overlayBackgroundColor="transparent"
+            isVisible={this.state.modalVisible}>
             <View>
               <View>
                 <TouchableHighlight
@@ -70,15 +69,13 @@ class ComicsScreen extends Component {
                   }}>
                   <Text>X</Text>
                 </TouchableHighlight>
-                <Image source={{ uri: this.state.displayComic.thumbnail.path + '.' + this.state.displayComic.thumbnail.extension }} style={{width: 75, height: 125}} />
+                <Image source={{ uri: this.state.displayComic.thumbnail.path + '/portrait_medium.' + this.state.displayComic.thumbnail.extension }} style={{width: 150, height: 225}} />
                 <Text>{this.state.displayComic.title}</Text>
                 <Text>{this.state.displayComic.description ? this.state.displayComic.description : 'Sorry, there is no description available for this title!'}</Text>
                 <Text>{this.state.displayComic.variantDescription && this.state.displayComic.variantDescription}</Text>
-                <Text></Text>
-                <Text></Text>
               </View>
             </View>
-          </Modal>
+          </Overlay>
         </View>
       )
     }
