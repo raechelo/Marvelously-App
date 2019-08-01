@@ -32,14 +32,14 @@ class ComicsScreen extends Component {
 
   render() {
     let displayComics = this.state.comics.map(comic => {
-      let img = comic.thumbnail.path + '.' + comic.thumbnail.extension
+      let img = comic.thumbnail.path + '/portrait_xlarge.' + comic.thumbnail.extension
       return (
         <View key={comic.id} >
         <TouchableHighlight
           onPress={() => {
             this.setModalVisible(comic);
             }}>
-            <Image source={{ uri: img }} style={{width: 75, height: 125}} />
+            <Image source={{ uri: img }} style={{width: 150, height: 225}} />
           </TouchableHighlight>
         </View>
         )
@@ -59,7 +59,7 @@ class ComicsScreen extends Component {
           </ScrollView>
           <Overlay
             windowBackgroundColor="red"
-            overlayBackgroundColor="transparent"
+            overlayBackgroundColor="white"
             isVisible={this.state.modalVisible}>
             <View>
               <View>
@@ -69,7 +69,7 @@ class ComicsScreen extends Component {
                   }}>
                   <Text>X</Text>
                 </TouchableHighlight>
-                <Image source={{ uri: this.state.displayComic.thumbnail.path + '/portrait_medium.' + this.state.displayComic.thumbnail.extension }} style={{width: 150, height: 225}} />
+                <Image source={{ uri: this.state.displayComic.thumbnail.path + '/xlarge.' + this.state.displayComic.thumbnail.extension }} style={{width: 150, height: 225}} />
                 <Text>{this.state.displayComic.title}</Text>
                 <Text>{this.state.displayComic.description ? this.state.displayComic.description : 'Sorry, there is no description available for this title!'}</Text>
                 <Text>{this.state.displayComic.variantDescription && this.state.displayComic.variantDescription}</Text>
@@ -89,12 +89,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: 'wrap',
     alignContent: 'stretch',
-    backgroundColor: 'black',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   text: {
-    color: '#fff',
+    color: 'black',
     alignItems: 'center',
     justifyContent: 'center',
   },
